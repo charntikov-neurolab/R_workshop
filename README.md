@@ -10,4 +10,5 @@ Workshop guide can be found in lessons/ folder.
 
 # Here is tentative lesson plan
 
-<a href="lessons/01-R-basics.html">Lesson 01</a>
+<a href="lessons/01-R-basics.html">Lesson 01: R Basics</a>
+<a href="lessons/02-R-simulating-datasets.html">Lesson 02: Simulating Datasets</a>

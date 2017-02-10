@@ -186,20 +186,105 @@ print(y)
 
 ## Functions
 
-<h2>The anatomy of a Function. Typos averse</h2>
+### The anatomy of a Function. Typos averse
 
 <img src="images/Function.png" alt="Function">
 
+### Example 1: mean
+
+To compute a mean you could type
+
+```{r}
+b<-(10+20+30)/3
+b
+```
+
+but if vector is long this will take long time
+
+the alternative is to use an existing function like mean()
+
+For example:
+
+```{r}
+mean(x=b) # b is a vector we defined earlier
+```
 
 
 
 
+### Example 2: rnorm
+
+- rnorm() is an example of another existing function
+- this function creates random numbers
+- rnorm(10) will create 10 random numbers
+
+
+### Example 3: rnorm with constraints
+
+If we need 10 random numbers with certain parameters:
+
+- rnorm(10, mean=1.2, sd=3.4)
+- This will output a normal distribution with mean 1.2 and standard deviation 3.4.
+
+```{r}
+rnorm(10, mean=1.2, sd=3.4)
+```
+
+### Example 4: histogram
+
+```{r}
+x=rnorm(100, mean=10, sd=1.2)
+hist(x) # will output a histogram of x below
+```
 
 
 
+## Matrices
+
+Matrices are two dimensional vectors. Lets define a matrix.
+
+```{r}
+mat=matrix(data=c(9,2,3,4,5,6, ncol=3))
+```
+
+1. argument data specifies which numbers should be in the matrix
+
+2. ncol or nrow specify the number of columns or rows
+
+3. elements of a matrix can be addressed: [row,column]
+
+4. to select whole row leave the spot for column empty mat [2,]
+
+5. functions also work with matrices mean(mat)
+
+## Simple graphics
+
+Plot:
+
+```{r}
+plot(rnorm(100), type="l", col="gold")
+```
 
 
+## Summaries
 
+Create data frame:
+
+```{r}
+x1<-rnorm(100)
+x2<-rnorm(100)
+x3<-rnorm(100)
+t<-data.frame(a=x1, b=x1+x2, c=x1+x2+x3)
+```
+
+Summary:
+
+```{r}
+summary(t)
+str(t) # shows data types
+head(t) # shows first few rows
+tail(t) # shows last few rows
+```
 
 
 

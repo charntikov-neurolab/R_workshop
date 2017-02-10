@@ -1,0 +1,35 @@
+---
+title: "Simulating Datasets"
+output:
+  html_document:
+    toc: yes
+Objectives: 
+- "To ensure all participants have the tools to participate in this workshop"
+---
+
+# Simulating datasets
+
+There are many ways to simulate factorial datasets. We will use a step-by-step approach to make sure that you are getting familiar with every aspect of datasets based on factorial design. 
+
+## The concept behind creating a single level of a dataset.
+
+<img src="images/dataset1.png" alt="dataset level">
+
+## Combining multiple data frames representing each levels of a factor into a single dataset.
+
+<img src="images/dataset2.png" alt="dataset level">
+
+
+
+
+
+
+
+
+
+# Session details
+
+
+```{r}
+devtools::session_info()
+```
