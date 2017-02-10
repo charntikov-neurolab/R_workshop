@@ -128,6 +128,9 @@ dog<-3
 cat*dog
 
 ```
+```{r}
+
+```
 
 when you hit Enter you should see this output
 
@@ -154,12 +157,34 @@ print(y)
 ```
 
 
-
 In the code above, "c" is a function that combines its arguments into a vector (a string of numbers).
 
 
+```{r, eval=FALSE}
+y <- x^2
+```
 
 
+Squares the elements of x and assign product to y
+
+
+```{r, eval=FALSE}
+print(y)
+```
+
+Print is a function that prints its argument on the screen.
+
+```{r}
+# Runing the code will produce this output.
+# Note that "#" is used here to comment lines.
+# Anything after "#" will not be passed for code evaluation by R
+
+x <- c(1,2,3,4,5,6)
+y<-x^2
+print(y)
+```
+
+## Functions
 
 
 

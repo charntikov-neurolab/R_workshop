@@ -10,4 +10,4 @@ Workshop guide can be found in lessons/ folder.
 
 # Here is tentative lesson plan
 
-<a href="lessons/01-R-basics.html">Lession 01</a>
+<a href="lessons/01-R-basics.html">Lesson 01</a>
