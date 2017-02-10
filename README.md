@@ -6,3 +6,7 @@ This is a directory for information and documents associated with "R Workshop" t
 Sample datasets can be found in data/ folder. 
 
 Workshop guide can be found in lessons/ folder. 
+
+# Here is tentative lesson plan
+
+<a href="lessons/01-R-basics.html">Lession 01</a>
