@@ -186,7 +186,9 @@ print(y)
 
 ## Functions
 
+<h2>The anatomy of a Function. Typos averse</h2>
 
+<img src="images/Function.png" alt="Function">
 
 
 
