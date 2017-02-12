@@ -7,7 +7,6 @@ Objectives:
 - "To ensure all participants have the tools to participate in this workshop"
 ---
 
-<a href="/">Back</a>
 
 # Software
 
@@ -236,11 +235,11 @@ mean(x=b) # b is a vector we defined earlier
 - this function creates random numbers
 - rnorm(10) will create 10 random numbers
 
-### Example 2: rnorm
+
 
 
 ### Example 3: rnorm with constraints
-=======
+
 - rnorm() is an example of another existing function
 - this function creates random numbers
 - rnorm(10) will create 10 random numbers
@@ -251,7 +250,7 @@ If we need 10 random numbers with certain parameters:
 
 - rnorm(10, mean=1.2, sd=3.4)
 - This will output a normal distribution with mean 1.2 and standard deviation 3.4.
-=======
+
 ### Example 3: rnorm with constraints
 
 If we need 10 random numbers with certain parameters:
@@ -360,9 +359,10 @@ tail(t) # shows last few rows
 ```
 
 
-
 # Session details
 
 ```{r}
 devtools::session_info()
 ```
+
+# <a href="/R_workshop" class="topic" style="color:red">Navigate Back</a>
