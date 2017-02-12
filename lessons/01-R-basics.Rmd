@@ -244,7 +244,7 @@ mean(x=b) # b is a vector we defined earlier
 - rnorm() is an example of another existing function
 - this function creates random numbers
 - rnorm(10) will create 10 random numbers
->>>>>>> adc040eab3ff46197d5dd9e898c7753f6e5e4991
+
 
 If we need 10 random numbers with certain parameters:
 
