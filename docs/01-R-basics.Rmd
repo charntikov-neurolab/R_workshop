@@ -7,12 +7,6 @@ Objectives:
 - "To ensure all participants have the tools to participate in this workshop"
 ---
 
----
-layout: default
-title: Hank Quinlan, Horrible Cop
----
-
-		<div class="blurb">
 
 # Software
 
@@ -371,4 +365,3 @@ tail(t) # shows last few rows
 devtools::session_info()
 ```
 
-</div>
