@@ -268,7 +268,7 @@ were 32 total participants (8 subjects per group).
 
 6. Simulating data typical for your line of research.
 
-* Please simulate a dataset for your fnal project.
+* Please simulate a typical dataset used in your line of research.
 * Please visualize your dataset as you see fit.
 * Please narrate the effects as you would expect them to occur in real experiment.
 
