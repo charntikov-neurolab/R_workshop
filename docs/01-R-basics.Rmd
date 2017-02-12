@@ -358,6 +358,32 @@ head(t) # shows first few rows
 tail(t) # shows last few rows
 ```
 
+# Additional learning opportunities
+
+1. Using assignment operator
+
+* assign a single value to a variable (one letter or multiple letters such as a word)
+* call that variable so it prints out an output
+
+2. Basic manipulations with a single variable
+
+* assign a single value to a variable (one letter or multiple letters such as a word)
+* square that variable using (*) math operator and assign the result to a second variable
+* divide the second variable (not the value) by 3 (make sure that your code outputs the result)
+
+3. Creating and manipulating strings
+
+* create three different vectors with a string of values in each vector
+* get a mean for each vector
+* get sd for each vector
+* sum these vectors through variables
+
+4. Working with strings
+
+* assign a string of numbers to a variable
+* assign a string of numbers to a second variable
+* multiply the two variables and assign a product of this operation to a third variable
+* call the third variable
 
 # Session details
 

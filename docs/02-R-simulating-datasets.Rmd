@@ -227,7 +227,50 @@ What is best for my data?
 
 
 
+# Additional learning opportunities
 
+1. Simulating data 1
+
+* create a vector of random 100 numbers with custom mean and sd parameters
+* assign this vector to a variable (one letter or multiple letters such as a word)
+* plot these values
+* get a histogram of these values
+
+2. Simulating data 2
+
+* create a vector of random 100 numbers
+* create a histogram of this vector
+* find SD of this vector
+* find a mean of this vector
+
+3. Simulating data 3
+* create a data frame with three columns
+* create a summary of this data frame
+* get sd for each column
+* get mean for each column
+
+4. Simulating factorial design dataset. Please simulate a dataset from the following hypothetical experiment:
+
+In this experiment human subjects come to the race track. At the race track participants are asked to complete an obstacle course task driving a mid-size sedan car. 30 min prior to the driving task, participants drink 0, 1, 3, or 5 standard alcohol drinks. Each participants comes to the track once a week on the weekend until they experience all 4 alcohol conditions. At the end of the driving task experimenter logs a number of traffic cones, that used to outline each obstacle, knocked down by each driver. There were total 12 subjects that participated in this experiment. 
+
+* Please simulate the dataset as you think it should reflect the results of this experiment.
+* Please make sure that variance in each condition is different from other conditions.
+* Please visualize the results of this experience as you see fit.
+
+5. Simulating factorial design dataset. Please simulate a dataset from the following hypothetical experiment:
+
+In this experiment four groups of participants are given experimental drug that was designed to enhance performance of troops facing sleep deprivation conditions. In this experiment all subjects are first sleep deprived for 36 hours and then are asked to complete an obstacle course task driving a mid-size sedan car. 1 hour prior to the driving task participants are given 0, 10, 50, or 200 mg of this experimental drug and then asked to drive through the obstacle course. At the end of the driving task experimenter logs a number of traffic cones, that used to outline each obstacle, knocked down by each driver. There
+were 32 total participants (8 subjects per group).
+
+* Please simulate the dataset as you think it should reflect the results of this experiment.
+* Please make sure that variance in each condition is different from other conditions.
+* Please visualize the results of this experience as you see fit.
+
+6. Simulating data typical for your line of research.
+
+* Please simulate a dataset for your fnal project.
+* Please visualize your dataset as you see fit.
+* Please narrate the effects as you would expect them to occur in real experiment.
 
 
 
@@ -239,3 +282,6 @@ What is best for my data?
 ```{r}
 devtools::session_info()
 ```
+
+
+# <a href="/R_workshop" class="topic" style="color:red">Navigate Back</a>
