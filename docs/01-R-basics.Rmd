@@ -17,14 +17,14 @@ The following software is required for this workshop:
 
 ### R [Free]: The R Project for Statistical Computing.
 
-- Download R for your platform here: https://cloud.r-project.org/
-- Install
+* Download R for your platform here: https://cloud.r-project.org/
+* Install
 
 ### RStudio [Free]: A powerful and productive user interface for R. It's free and open source, and works great on Windows, Mac, and Linux.
 
-- https://www.rstudio.com/products/rstudio/download/
-- Download and install
-- Attention: Download and install R FIRST! from the link above.
+* https://www.rstudio.com/products/rstudio/download/
+* Download and install
+* Attention: Download and install R FIRST! from the link above.
 
 
 #### Attention Mac users!
@@ -63,20 +63,22 @@ R is a powerful language and environment for statistical computing. R is a freew
 
 5. Once R is installed, there is a comprehensive built-in help system. At the program's command prompt you can use any of the following:
 
-- help.start() # general help
-- help(foo) # help about function foo
-- ?foo # same thing
-- apropos("foo") # list all functions containing string foo
-- example(foo) # show an example of function foo
-- vignette() # show available vignettes
-- vignette("foo")# show specific vignette
+* help.start() # general help
+* help(foo) # help about function foo
+* ?foo # same thing
+* apropos("foo") # list all functions containing string foo
+* example(foo) # show an example of function foo
+* vignette() # show available vignettes
+* vignette("foo")# show specific vignette
 
 
 ## Creating and executing scripts
 
-- Open RStudio
-- Create new R script file: File ! New File ! R Script
-- Save this script file in our Project folder (name it RScript)
+* Open RStudio
+* Create new R script file - File: New File: R Script
+* Save this script file in our Project folder (name it RScript)
+* We will use this script file to record our advances in R
+* Please make sure that the directory where you saved your R script is synced to cloud (no one likes to loose their work when machines misbehave).
 
 In the editor window (newly created R script file) let's type:
 
@@ -143,9 +145,9 @@ cat*dog
 
 What we did is:
 
-- we assigned 2 to variable "cat"
-- we assigned 3 to variable "dog"
-- we then multiplied those two variables
+* we assigned 2 to variable "cat"
+* we assigned 3 to variable "dog"
+* we then multiplied those two variables
 
 ### Example 2:
 
@@ -231,32 +233,32 @@ mean(x=b) # b is a vector we defined earlier
 
 ### Example 2: rnorm
 
-- rnorm() is an example of another existing function
-- this function creates random numbers
-- rnorm(10) will create 10 random numbers
+* rnorm() is an example of another existing function
+* this function creates random numbers
+* rnorm(10) will create 10 random numbers
 
 
 
 
 ### Example 3: rnorm with constraints
 
-- rnorm() is an example of another existing function
-- this function creates random numbers
-- rnorm(10) will create 10 random numbers
+* rnorm() is an example of another existing function
+* this function creates random numbers
+* rnorm(10) will create 10 random numbers
 
 
 If we need 10 random numbers with certain parameters:
 
 
-- rnorm(10, mean=1.2, sd=3.4)
-- This will output a normal distribution with mean 1.2 and standard deviation 3.4.
+* rnorm(10, mean=1.2, sd=3.4)
+* This will output a normal distribution with mean 1.2 and standard deviation 3.4.
 
 ### Example 3: rnorm with constraints
 
 If we need 10 random numbers with certain parameters:
 
-- rnorm(10, mean=1.2, sd=3.4)
-- This will output a normal distribution with mean 1.2 and standard deviation 3.4.
+* rnorm(10, mean=1.2, sd=3.4)
+* This will output a normal distribution with mean 1.2 and standard deviation 3.4.
 
 ```{r}
 rnorm(10, mean=1.2, sd=3.4)

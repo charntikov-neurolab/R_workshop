@@ -3,8 +3,6 @@ title: "Simulating Datasets"
 output:
   html_document:
     toc: yes
-Objectives: 
-- "To ensure all participants have the tools to participate in this workshop"
 ---
 
 # Simulating datasets
@@ -211,9 +209,8 @@ ggplot(dfse, aes(x=dose, y=dv)) +
 
 What is best for my data?
 
-- line connecting points often used for within subjects designs
-
-- boxplots and barplots are often used for between subject designs
+* line connecting points often used for within subjects designs
+* boxplots and barplots are often used for between subject designs
 
 
 ### Visualizing dataset using ggplot package.
