@@ -57,7 +57,7 @@ dv<-rnorm(10, mean=23, sd=3)
 dv
 
 df2<-data.frame(subject=subject, dose=level, dv=dv) # combine to another df
-df
+df2
 
 
 
@@ -184,13 +184,26 @@ library(ggplot2) # load ggplot package so we can use ggplot() function
 ggplot(df, aes(factor(dose), dv)) + # creates empty plot\\
 	geom_boxplot() + # to create boxplots on the plot\\
 	geom_jitter() # this will visualize every data point on the plot
+
+# Lets brake it down line by line
+
+p1<-ggplot(df, aes(factor(dose), dv)) # create an empty plot from df dataset, with these x and y variables. Let ggplot know that dose is a factor. 
+p1 # lets see our empty plot
+
+p1<-p1+geom_boxplot() # lets add boxplot layer
+p1 # lets visualize our creation
+
+p1<-p1+geom_jitter()
+p1 # lets visualize our creation
+        
+        
 ```
 
 
 
 The box plot (a.k.a. box and whisker diagram) is a standardized way of displaying the distribution of data based on the five number summary: minimum, first quartile, median, third quartile, and maximum.
 
-Line, point, and error bars}
+### Line, point, and error bars
 
 Let's load additional package to help us with error bars.
 
@@ -211,6 +224,8 @@ ggplot(dfse, aes(x=dose, y=dv, group=1)) +
 			geom_line() +
 			geom_point() +
 			geom_errorbar(aes(ymin=dv-se, ymax=dv+se), width=.1)
+
+
 
 ```
 
