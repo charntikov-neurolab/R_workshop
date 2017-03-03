@@ -1,5 +1,5 @@
 ---
-title: "Project Management and Data Wrangling"
+title: "Data Wrangling"
 output:
   html_document:
     toc: yes
@@ -82,6 +82,7 @@ dataset$Subject<-as.factor(new.dataset$Subject)
 dataset$Dose<-as.factor(new.dataset$Dose)
 
 summary(dataset)
+str(dataset)
 
 ```
 

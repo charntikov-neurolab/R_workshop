@@ -1,5 +1,5 @@
 ---
-title: "Project Management and Data Wrangling"
+title: "Project Management"
 output:
   html_document:
     toc: yes
@@ -17,10 +17,22 @@ OR
 
 I recommend 
 
-* two additional folders: images and data
+* two additional folders: figures and data
 * data-visualization.Rmd file for data visualization
 * figures.R file for publication quality figures
 * data-analysis.R for all your data analysis
+
+### Project treee structure
+
+* MainProjectFolder/
+    + data/
+    + figures/
+    + data-analysis.R
+    + data-visualization.Rmd
+    + figures.R 
+    + ProjectName.Rproj
+        
+
 
 ## Data - Practice dataset
 
