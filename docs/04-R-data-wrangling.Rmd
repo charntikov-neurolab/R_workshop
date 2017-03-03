@@ -77,7 +77,7 @@ new.dataset<-dplyr::bind_rows(Female, Male)
 summary(new.dataset)
 # utils::View(new.dataset)
 
-# conver to variable to factor
+# conver variable to factor
 dataset$Subject<-as.factor(new.dataset$Subject)
 dataset$Dose<-as.factor(new.dataset$Dose)
 
