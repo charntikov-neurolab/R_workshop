@@ -26,30 +26,62 @@ ipak(packages)
 ## Load and wrangle with data
 ```{r}
 # load data
-
 dataset <- read.csv("data/Sample-Dose-Effect-Curve.csv")
 
 # rename IV.Sex to Sex
-
 dataset<-dplyr::rename(dataset, Sex=IV.Sex)
 
-# verify dataset
+# rename DV.Response to Response
+dataset<-dplyr::rename(dataset, Response=DV.Response)
 
+# rename IV.Dose to Dose
+dataset<-dplyr::rename(dataset, Dose=IV.DOSE) # note change in capitalization
+
+# rename DV.Activity to Activity
+dataset<-dplyr::rename(dataset, Activity=DV.Activity)
+
+# verify dataset
 summary(dataset)
 
 # view data in spreadsheet-like display 
-
 # utils::View(dataset)
 
-# Suset dataset
-
+# Subset dataset
 Female<-subset(dataset, Sex=="Fem")
 Male<-subset(dataset, Sex=="M")
 
 # verify newly created data
-
 summary(Female)
 str(Male)
+
+# drop unused levels
+Female<-droplevels(Female)
+Male<-droplevels(Male)
+
+# make new variables
+
+Female<-dplyr::mutate(Female, newvar1=Response + Activity)
+Female<-dplyr::mutate(Female, newvar2=Response*Activity)
+Female<-dplyr::mutate(Female, newvar3=Response*100)
+
+summary(Female)
+
+# remove newly created columns
+Female<-dplyr::select(Female, one_of(c("Subject", "StartDate", "Drug", "Sex", "Activity", "Dose","Response")))
+
+
+# combine datasets
+
+new.dataset<-dplyr::bind_rows(Female, Male)
+
+summary(new.dataset)
+# utils::View(new.dataset)
+
+# conver to variable to factor
+dataset$Subject<-as.factor(new.dataset$Subject)
+dataset$Dose<-as.factor(new.dataset$Dose)
+
+summary(dataset)
 
 ```
 

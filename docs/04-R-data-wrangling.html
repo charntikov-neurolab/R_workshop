@@ -154,24 +154,30 @@ ipak(packages)</code></pre>
 <div id="load-and-wrangle-with-data" class="section level2">
 <h2>Load and wrangle with data</h2>
 <pre class="r"><code># load data
-
 dataset &lt;- read.csv(&quot;data/Sample-Dose-Effect-Curve.csv&quot;)
 
 # rename IV.Sex to Sex
-
 dataset&lt;-dplyr::rename(dataset, Sex=IV.Sex)
 
-# verify dataset
+# rename DV.Response to Response
+dataset&lt;-dplyr::rename(dataset, Response=DV.Response)
 
+# rename IV.Dose to Dose
+dataset&lt;-dplyr::rename(dataset, Dose=IV.DOSE) # note change in capitalization
+
+# rename DV.Activity to Activity
+dataset&lt;-dplyr::rename(dataset, Activity=DV.Activity)
+
+# verify dataset
 summary(dataset)</code></pre>
-<pre><code>##     Subject          StartDate   Drug      Sex      DV.Activity   
+<pre><code>##     Subject          StartDate   Drug      Sex        Activity    
 ##  Min.   :8640   1/24/2012 :24   Bup:144   Fem:72   Min.   :  0.0  
 ##  1st Qu.:8646   1/29/2012 :24             M  :72   1st Qu.: 82.0  
 ##  Median :8652   1/4/2012  :24                      Median :112.5  
 ##  Mean   :8652   1/9/2012  :24                      Mean   :118.7  
 ##  3rd Qu.:8657   12/20/2011:24                      3rd Qu.:152.2  
 ##  Max.   :8663   12/30/2011:24                      Max.   :324.0  
-##     IV.DOSE       DV.Response     
+##       Dose          Response      
 ##  Min.   : 0.00   Min.   :0.00000  
 ##  1st Qu.: 5.00   1st Qu.:0.04167  
 ##  Median :15.00   Median :0.08333  
@@ -179,25 +185,22 @@ summary(dataset)</code></pre>
 ##  3rd Qu.:30.00   3rd Qu.:0.18021  
 ##  Max.   :60.00   Max.   :1.00417</code></pre>
 <pre class="r"><code># view data in spreadsheet-like display 
-
 # utils::View(dataset)
 
-# Suset dataset
-
+# Subset dataset
 Female&lt;-subset(dataset, Sex==&quot;Fem&quot;)
 Male&lt;-subset(dataset, Sex==&quot;M&quot;)
 
 # verify newly created data
-
 summary(Female)</code></pre>
-<pre><code>##     Subject          StartDate   Drug     Sex      DV.Activity    
+<pre><code>##     Subject          StartDate   Drug     Sex        Activity     
 ##  Min.   :8652   1/24/2012 :12   Bup:72   Fem:72   Min.   :  0.00  
 ##  1st Qu.:8655   1/29/2012 :12            M  : 0   1st Qu.: 82.75  
 ##  Median :8658   1/4/2012  :12                     Median :119.00  
 ##  Mean   :8658   1/9/2012  :12                     Mean   :127.78  
 ##  3rd Qu.:8660   12/20/2011:12                     3rd Qu.:173.00  
 ##  Max.   :8663   12/30/2011:12                     Max.   :324.00  
-##     IV.DOSE       DV.Response     
+##       Dose          Response      
 ##  Min.   : 0.00   Min.   :0.00000  
 ##  1st Qu.: 5.00   1st Qu.:0.04479  
 ##  Median :15.00   Median :0.08333  
@@ -206,13 +209,91 @@ summary(Female)</code></pre>
 ##  Max.   :60.00   Max.   :1.00417</code></pre>
 <pre class="r"><code>str(Male)</code></pre>
 <pre><code>## 'data.frame':    72 obs. of  7 variables:
-##  $ Subject    : int  8640 8641 8642 8643 8644 8645 8646 8647 8648 8649 ...
-##  $ StartDate  : Factor w/ 6 levels &quot;1/24/2012&quot;,&quot;1/29/2012&quot;,..: 3 5 4 6 3 4 4 6 4 4 ...
-##  $ Drug       : Factor w/ 1 level &quot;Bup&quot;: 1 1 1 1 1 1 1 1 1 1 ...
-##  $ Sex        : Factor w/ 2 levels &quot;Fem&quot;,&quot;M&quot;: 2 2 2 2 2 2 2 2 2 2 ...
-##  $ DV.Activity: int  83 106 96 71 83 152 92 60 105 45 ...
-##  $ IV.DOSE    : int  0 0 0 0 0 0 0 0 0 0 ...
-##  $ DV.Response: num  0.0708 0.0125 0.075 0.0458 0.0208 ...</code></pre>
+##  $ Subject  : int  8640 8641 8642 8643 8644 8645 8646 8647 8648 8649 ...
+##  $ StartDate: Factor w/ 6 levels &quot;1/24/2012&quot;,&quot;1/29/2012&quot;,..: 3 5 4 6 3 4 4 6 4 4 ...
+##  $ Drug     : Factor w/ 1 level &quot;Bup&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Sex      : Factor w/ 2 levels &quot;Fem&quot;,&quot;M&quot;: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ Activity : int  83 106 96 71 83 152 92 60 105 45 ...
+##  $ Dose     : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Response : num  0.0708 0.0125 0.075 0.0458 0.0208 ...</code></pre>
+<pre class="r"><code># drop unused levels
+Female&lt;-droplevels(Female)
+Male&lt;-droplevels(Male)
+
+# make new variables
+
+Female&lt;-dplyr::mutate(Female, newvar1=Response + Activity)
+Female&lt;-dplyr::mutate(Female, newvar2=Response*Activity)
+Female&lt;-dplyr::mutate(Female, newvar3=Response*100)
+
+summary(Female)</code></pre>
+<pre><code>##     Subject          StartDate   Drug     Sex        Activity     
+##  Min.   :8652   1/24/2012 :12   Bup:72   Fem:72   Min.   :  0.00  
+##  1st Qu.:8655   1/29/2012 :12                     1st Qu.: 82.75  
+##  Median :8658   1/4/2012  :12                     Median :119.00  
+##  Mean   :8658   1/9/2012  :12                     Mean   :127.78  
+##  3rd Qu.:8660   12/20/2011:12                     3rd Qu.:173.00  
+##  Max.   :8663   12/30/2011:12                     Max.   :324.00  
+##       Dose          Response          newvar1           newvar2      
+##  Min.   : 0.00   Min.   :0.00000   Min.   :  1.004   Min.   : 0.000  
+##  1st Qu.: 5.00   1st Qu.:0.04479   1st Qu.: 82.827   1st Qu.: 4.343  
+##  Median :15.00   Median :0.08333   Median :119.058   Median :10.942  
+##  Mean   :20.83   Mean   :0.12054   Mean   :127.898   Mean   :15.134  
+##  3rd Qu.:30.00   3rd Qu.:0.14583   3rd Qu.:173.038   3rd Qu.:20.019  
+##  Max.   :60.00   Max.   :1.00417   Max.   :324.137   Max.   :77.292  
+##     newvar3       
+##  Min.   :  0.000  
+##  1st Qu.:  4.479  
+##  Median :  8.333  
+##  Mean   : 12.054  
+##  3rd Qu.: 14.583  
+##  Max.   :100.417</code></pre>
+<pre class="r"><code># remove newly created columns
+Female&lt;-dplyr::select(Female, one_of(c(&quot;Subject&quot;, &quot;StartDate&quot;, &quot;Drug&quot;, &quot;Sex&quot;, &quot;Activity&quot;, &quot;Dose&quot;,&quot;Response&quot;)))
+
+
+# combine datasets
+
+new.dataset&lt;-dplyr::bind_rows(Female, Male)</code></pre>
+<pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
+<pre class="r"><code>summary(new.dataset)</code></pre>
+<pre><code>##     Subject          StartDate   Drug         Sex           
+##  Min.   :8640   1/24/2012 :24   Bup:144   Length:144        
+##  1st Qu.:8646   1/29/2012 :24             Class :character  
+##  Median :8652   1/4/2012  :24             Mode  :character  
+##  Mean   :8652   1/9/2012  :24                               
+##  3rd Qu.:8657   12/20/2011:24                               
+##  Max.   :8663   12/30/2011:24                               
+##     Activity          Dose          Response      
+##  Min.   :  0.0   Min.   : 0.00   Min.   :0.00000  
+##  1st Qu.: 82.0   1st Qu.: 5.00   1st Qu.:0.04167  
+##  Median :112.5   Median :15.00   Median :0.08333  
+##  Mean   :118.7   Mean   :20.83   Mean   :0.12674  
+##  3rd Qu.:152.2   3rd Qu.:30.00   3rd Qu.:0.18021  
+##  Max.   :324.0   Max.   :60.00   Max.   :1.00417</code></pre>
+<pre class="r"><code># utils::View(new.dataset)
+
+# conver to variable to factor
+dataset$Subject&lt;-as.factor(new.dataset$Subject)
+dataset$Dose&lt;-as.factor(new.dataset$Dose)
+
+summary(dataset)</code></pre>
+<pre><code>##     Subject         StartDate   Drug      Sex        Activity     Dose   
+##  8640   :  6   1/24/2012 :24   Bup:144   Fem:72   Min.   :  0.0   0 :24  
+##  8641   :  6   1/29/2012 :24             M  :72   1st Qu.: 82.0   5 :24  
+##  8642   :  6   1/4/2012  :24                      Median :112.5   10:24  
+##  8643   :  6   1/9/2012  :24                      Mean   :118.7   20:24  
+##  8644   :  6   12/20/2011:24                      3rd Qu.:152.2   30:24  
+##  8645   :  6   12/30/2011:24                      Max.   :324.0   60:24  
+##  (Other):108                                                             
+##     Response      
+##  Min.   :0.00000  
+##  1st Qu.:0.04167  
+##  Median :0.08333  
+##  Mean   :0.12674  
+##  3rd Qu.:0.18021  
+##  Max.   :1.00417  
+## </code></pre>
 </div>
 </div>
 <div id="session-details" class="section level1">
