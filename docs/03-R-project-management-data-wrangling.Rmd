@@ -1,0 +1,41 @@
+---
+title: "Project Management and Data Wrangling"
+output:
+  html_document:
+    toc: yes
+---
+
+# Creating projects in RStudio
+
+> File: New Project
+
+OR
+
+> Project list (top right corner): New Project
+
+## Project structure
+
+I recommend 
+
+* two additional folders: images and data
+* data-visualization.Rmd file for data visualization
+* figures.R fiel for publication quality figures
+* data-analysis.R for all your data analysis
+
+## Data - Practice dataset
+
+1. Go to <a href="https://github.com/sergioschr/R_workshop/blob/master/data/Sample-Dose-Effect-Curve.csv" target="_blank">GitHub</a>
+
+2. Right click on "Raw"
+
+3. "Save link as" to save it in project/data folder
+
+# Session details
+
+
+```{r}
+devtools::session_info()
+```
+
+
+# <a href="/R_workshop" class="topic" style="color:red">Navigate Back</a>
