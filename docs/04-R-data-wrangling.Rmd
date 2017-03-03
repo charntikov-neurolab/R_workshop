@@ -1,0 +1,68 @@
+---
+title: "Project Management and Data Wrangling"
+output:
+  html_document:
+    toc: yes
+---
+
+
+# Data wrangling
+
+## Load packages
+```{r, message=FALSE, warning=FALSE}
+
+ipak <- function(pkg){
+        new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+        if (length(new.pkg))
+                install.packages(new.pkg, dependencies = TRUE)
+        sapply(pkg, require, character.only = TRUE)
+}
+
+# usage
+packages <- c("ggplot2", "Rmisc", "tidyr", "RColorBrewer", "plotly", "ggplot2", "nlme", "dplyr", "cowplot", "grid", "gridExtra") # add or remove packages as needed
+ipak(packages)
+```
+
+## Load and wrangle with data
+```{r}
+# load data
+
+dataset <- read.csv("data/Sample-Dose-Effect-Curve.csv")
+
+# rename IV.Sex to Sex
+
+dataset<-dplyr::rename(dataset, Sex=IV.Sex)
+
+# verify dataset
+
+summary(dataset)
+
+# view data in spreadsheet-like display 
+
+# utils::View(dataset)
+
+# Suset dataset
+
+Female<-subset(dataset, Sex=="Fem")
+Male<-subset(dataset, Sex=="M")
+
+# verify newly created data
+
+summary(Female)
+str(Male)
+
+```
+
+
+
+# Session details
+
+
+
+
+```{r}
+devtools::session_info()
+```
+
+
+# <a href="/R_workshop" class="topic" style="color:red">Navigate Back</a>

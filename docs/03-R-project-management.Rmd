@@ -1,0 +1,129 @@
+---
+title: "Project Management and Data Wrangling"
+output:
+  html_document:
+    toc: yes
+---
+
+# Creating projects in RStudio
+
+> File: New Project
+
+OR
+
+> Project list (top right corner): New Project
+
+## Project structure
+
+I recommend 
+
+* two additional folders: images and data
+* data-visualization.Rmd file for data visualization
+* figures.R file for publication quality figures
+* data-analysis.R for all your data analysis
+
+## Data - Practice dataset
+
+1. Go to <a href="https://github.com/sergioschr/R_workshop/blob/master/data/Sample-Dose-Effect-Curve.csv" target="_blank">GitHub</a>
+
+2. Right click on "Raw"
+
+3. "Save link as" to save it in project/data folder
+
+
+## Code files
+
+Let's create data visualization, figures, and data analysis files in your project directory
+
+## Data visualization file
+
+Let's start with data-visualization.Rmd file
+
+### Initial setup
+
+1. Create file File:New File:R Markdown:PDF output
+2. Erase body (everything below preamble)
+3. Insert new R chunk (see +C "Insert" in the document top toolbar)
+4. Paste the following code in the first chunk
+
+```{r, message=FALSE, warning=FALSE}
+
+ipak <- function(pkg){
+        new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+        if (length(new.pkg))
+                install.packages(new.pkg, dependencies = TRUE)
+        sapply(pkg, require, character.only = TRUE)
+}
+
+# usage
+packages <- c("ggplot2", "Rmisc", "tidyr", "RColorBrewer", "plotly", "ggplot2", "nlme", "dplyr", "cowplot", "grid", "gridExtra") # add or remove packages as needed
+ipak(packages)
+```
+
+5. Adjust chunk parameters
+
+> {r, message=FALSE, warning=FALSE}
+
+* message=FALSE # turn off all messages
+* warning=FALSE # turn off all warnings
+* find more options by googling "rstudio chunk options"
+
+### Add project description using markdown (markdow cheat sheet can be found in RStudio under Help:Cheatsheets)
+
+> \# My ground braking experiment
+
+> \#\# Overview
+
+> This project investigates the effect of "x" on "y" in both male and female subjects.
+
+
+### Import and assess data
+
+* Insert another R chunk with the following code
+
+
+```{r}
+dataset <- read.csv("data/Sample-Dose-Effect-Curve.csv")
+summary(dataset)
+
+```
+
+* Insert a final chunk with heading \#\#\# Data visualization
+
+```{r}
+ggplot(dataset, aes(x = factor(IV.DOSE), y = DV.Response, colour=IV.Sex)) +
+        geom_boxplot()
+```
+
+
+* Note that plot now looks different that before - no grid lines, white background, and no top and right border thanks to "cowplot" package. Once "cowplot" package is loaded ggplot plots will be automatically cleaned up. 
+
+
+
+### Create a PDF output
+
+* Just click "Knit" on the document's top toolbar.
+
+
+### Additional learning opportunity
+
+* place your own dataset in the data folder
+* create separate data visualization file with distinct name of your dataset
+* within the Rmd file create code to summarize your data and visualize your data as you like or able.
+* output Rmd to PDF file using "Knit" function
+* Troubleshoot if needed by googling your problem.
+
+
+
+
+# Session details
+
+
+
+
+```{r}
+devtools::session_info()
+```
+
+
+# <a href="/R_workshop" class="topic" style="color:red">Navigate Back</a>
