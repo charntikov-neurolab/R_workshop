@@ -22,7 +22,7 @@ I recommend
 * figures.R file for publication quality figures
 * data-analysis.R for all your data analysis
 
-### Project treee structure
+### Project tree structure
 
 * MainProjectFolder/
     + data/
