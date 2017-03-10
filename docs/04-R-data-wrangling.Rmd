@@ -19,7 +19,7 @@ ipak <- function(pkg){
 }
 
 # usage
-packages <- c("ggplot2", "Rmisc", "tidyr", "RColorBrewer", "plotly", "ggplot2", "nlme", "dplyr", "cowplot", "grid", "gridExtra") # add or remove packages as needed
+packages <- c("ggplot2", "Rmisc", "tidyr", "RColorBrewer", "plotly", "ggplot2", "nlme", "dplyr", "cowplot", "grid", "gridExtra", "reshape", "plyr") # add or remove packages as needed
 ipak(packages)
 ```
 
@@ -40,6 +40,10 @@ dataset<-dplyr::rename(dataset, Dose=IV.DOSE) # note change in capitalization
 # rename DV.Activity to Activity
 dataset<-dplyr::rename(dataset, Activity=DV.Activity)
 
+# rename variable
+levels(dataset$Sex)[levels(dataset$Sex)=="M"] <- "Male"
+
+
 # verify dataset
 summary(dataset)
 
@@ -48,7 +52,7 @@ summary(dataset)
 
 # Subset dataset
 Female<-subset(dataset, Sex=="Fem")
-Male<-subset(dataset, Sex=="M")
+Male<-subset(dataset, Sex=="Male")
 
 # verify newly created data
 summary(Female)
