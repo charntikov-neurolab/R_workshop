@@ -18,11 +18,11 @@ output:
 
 4. Git allows seamless collaboration using "forking", "branching", and "merging".
 
-<img src="images/branching-illustration.png" alt="Branching">
+<img src="images/branching-illustration.png" alt="Branching" width="50%" height="50%">
 
 5. Git allows easy data sharing through github [https://github.com/]
 
-<img src="images/Octocat.png" alt="GitHub">
+<img src="images/Octocat.png" alt="GitHub" width="50%" height="50%">
 
 6. Git allows easy data publishing through github
 
