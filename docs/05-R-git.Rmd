@@ -1,0 +1,61 @@
+---
+title: "Git for Scientists"
+output:
+  html_document:
+    toc: yes
+---
+
+
+# Why use Git
+
+<img src="images/logogit.png" alt="Git">
+
+1. Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.[https://git-scm.com/]
+
+2. Git eliminates need to save your files as draft-01, draft-02, draft-03, clean-draft, final-draft, and so on. 
+
+3. Git works on any text base file (sorry .docx).
+
+4. Git allows seamless collaboration using "forking", "branching", and "merging".
+
+<img src="images/branching-illustration.png" alt="Branching">
+
+5. Git allows easy data sharing through github [https://github.com/]
+
+<img src="images/Octocat.png" alt="GitHub">
+
+6. Git allows easy data publishing through github
+
+7. Git integrates well other tools scientists often use: RSTudio, LaTex editors, Linux, and much much more. 
+
+# Getting Git on your machine
+
+1. Download Git: https://git-scm.com/downloads
+
+2. Get optional GUI Client: https://git-scm.com/downloads/guis
+
+3. Learn Git in your browser in 15 min: https://try.github.io/levels/1/challenges/1
+
+4. Browse official Git reference manual and educational videos: https://git-scm.com/doc
+
+5. Configure Git your machine for the first time:
+
+Open GitBash (a terminal for Git) and on a command line write the following using `git verb` approach where `verb` is what we actually want to do. 
+
+> `git config --global user.name "Sergey Kirilenko"`
+
+> `git config --global user.email "sergey.kirilenko@kgb.ru"`
+
+> `git config --global color.ui "auto"`
+
+To set your favorite text editor (I highly recommend Atom)
+
+> `git config --global core.editor "atom --wait"`
+
+6. Get a GitHub account for academics
+
+7. Get your Git on!
+
+
+
+# <a href="/R_workshop" class="topic" style="color:red">Navigate Back</a>
