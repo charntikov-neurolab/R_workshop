@@ -1,0 +1,323 @@
+---
+title: "Basics of Data Analysis using R"
+output:
+  html_document:
+    toc: yes
+---
+
+
+# Basics of Statistical Analysis Using R
+
+## Power analysis
+
+To perform power analysis we will be using `pwr` package. Please installed this package using `install.packages()` function.
+
+```{r}
+library (pwr) # load required package
+
+# Run power analysis to estimate sample size (n)
+
+## type="paired" indicates that experiment used the same subjects in both conditions (within-subjects design). Note that "d" is set to very low effect size of 0.2.
+
+pwr.t.test(n = , d = 0.2, sig.level = 0.05 , power = 0.80, type = "paired")
+
+## type="two.sample" indicates that experiment used different groups of subjects in two conditions (between-subjects design). Note that "d" is set to very low effect size of 0.2.
+
+pwr.t.test(n = , d = 0.2, sig.level = 0.05 , power = 0.80, type = "two.sample")
+
+
+#Plot sample size - power relationship
+
+plot(pwr.t.test(d = 0.2, power = 0.80, type = "two.sample"))
+
+# Now let's visualize paired design with good effect size
+
+plot(pwr.t.test(d = 0.8, power = 0.80, type = "paired"))
+
+```
+
+
+
+
+## T-test
+
+```{r}
+
+# Simulate data for t-test
+
+before<-(rnorm(14, mean=22, sd=10))
+after<-(rnorm(14, mean=25, sd=10))
+
+boxplot(before, after)
+
+# Analyze data using t-test
+
+t.test(before, after, paired=TRUE) # paired. Is the difference between these groups significant?
+
+
+# Change data parameters
+
+before<-(rnorm(14, mean=22, sd=1))
+after<-(rnorm(14, mean=25, sd=1))
+
+boxplot(before, after)
+
+t.test(before, after, paired=TRUE) # Is the difference between these groups significant? What changed?
+
+
+```
+
+
+
+
+
+
+## Analysis of variance
+
+### Simulate dataset
+
+```{r}
+### Females ###
+
+# simulate level 1 for females
+subject<-(1:10)
+sex<-replicate(10, "female")
+level<-replicate(10, "control")
+dv<-rnorm(10, mean=10, sd=1)
+dff1<-data.frame(subject=subject, sex=sex, dose=level, dv=dv)
+dff1
+
+# simulate level 2 for females
+subject<-(11:20)
+sex<-replicate(10, "female")
+level<-replicate(10, "low")
+dv<-rnorm(10, mean=12, sd=2)
+dff2<-data.frame(subject=subject, sex=sex, dose=level, dv=dv)
+dff2
+
+# simulate level 3 for females
+subject<-(21:30)
+sex<-replicate(10, "female")
+level<-replicate(10, "high")
+dv<-rnorm(10, mean=18, sd=2.5)
+dff3<-data.frame(subject=subject, sex=sex, dose=level, dv=dv)
+dff3
+
+
+### Males ###
+
+# simulate level 1 for males
+subject<-(31:40)
+sex<-replicate(10, "male")
+level<-replicate(10, "control")
+dv<-rnorm(10, mean=18, sd=1.2)
+dfm1<-data.frame(subject=subject, sex=sex, dose=level, dv=dv)
+dfm1
+
+# simulate level 2 for males
+subject<-(41:50)
+sex<-replicate(10, "male")
+level<-replicate(10, "low")
+dv<-rnorm(10, mean=15, sd=1.8)
+dfm2<-data.frame(subject=subject, sex=sex, dose=level, dv=dv)
+dfm2
+
+# simulate level 3 for males
+subject<-(51:60)
+sex<-replicate(10, "male")
+level<-replicate(10, "high")
+dv<-rnorm(10, mean=11, sd=2.1)
+dfm3<-data.frame(subject=subject, sex=sex, dose=level, dv=dv)
+dfm3
+
+# merge data frames into one dataset
+
+df<-rbind(dff1, dff2, dff3, dfm1, dfm2, dfm3)
+df
+str(df)
+
+
+```
+
+### Visualize data and run simple ANOVAs
+
+```{r}
+# Visualize dataset
+
+library(ggplot2)
+
+ggplot(df, aes(x=dose, y=dv, colour=sex)) +
+        geom_boxplot()+
+        facet_wrap(~sex)
+
+library(Rmisc)
+
+dfse<-summarySE(df, measurevar="dv", groupvars=c("sex", "dose"))
+
+
+ggplot(dfse, aes(x=dose, y=dv, group=sex, colour=sex)) +
+        geom_line() +
+        geom_point()+
+        geom_errorbar(aes(ymin=dv-se, ymax=dv+se), width=.1)
+
+
+## Extract female data
+
+female<-subset(df, sex=="female")
+female
+
+## Extract male data
+
+male<-subset(df, sex=="male")
+male
+
+## Omnibus ANOVA
+
+summary(aov(dv~dose, df))
+
+## One way ANOVA - Females
+
+summary(aov(dv~dose, female))
+TukeyHSD(aov(dv~dose, female)) # "post hoc" multiple comparisons
+
+## One way ANOVA - Males
+
+summary(aov(dv~dose, male))
+TukeyHSD(aov(dv~dose, male)) # "post hoc" multiple comparisons
+
+## Two way ANOVA - Sex X Dose
+
+summary(aov(dv~sex*dose, df))
+TukeyHSD(aov(dv~sex*dose, df)) # "post hoc" multiple comparisons
+
+```
+
+
+
+
+### ANOVA on a more complex dataset
+
+```{r, message=FALSE, warning=FALSE}
+ipak <- function(pkg){
+        new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+        if (length(new.pkg))
+                install.packages(new.pkg, dependencies = TRUE)
+        sapply(pkg, require, character.only = TRUE)
+}
+
+# usage
+packages <- c("ggplot2", "Rmisc", "tidyr", "RColorBrewer", "plotly", "ggplot2", "nlme", "dplyr", "cowplot", "grid", "gridExtra", "reshape", "plyr") # add or remove packages as needed
+ipak(packages)
+```
+
+
+```{r}
+# import data
+mydataset <- read.csv("data/Sample-Dose-Effect-Curve.csv")
+
+#Explore dataset
+summary(mydataset)
+str(mydataset)
+
+# Rename columns
+
+mydataset<-rename(mydataset, c("IV.Sex"="Sex", "DV.Activity"="Activity", "IV.DOSE"="DOSE", "DV.Response"="Response"))
+str(mydataset)
+
+# Convert variables to factors
+
+mydataset$Subject<-as.factor(mydataset$Subject)
+mydataset$DOSE<-as.factor(mydataset$DOSE)
+
+# Rename level of a factor
+
+with(mydataset, (levels(Sex)))
+mydataset$Sex<-with(mydataset, revalue(Sex, c("Fem"="F")))
+str(mydataset)
+
+### Subset dataset for separate analysis if needed
+Female<-subset(mydataset, Sex=="F")
+Male<-subset(mydataset, Sex=="M")
+
+summary(Female)
+summary(Male)
+
+
+#Basic summary statistics by group usign Psych package
+library(psych)
+with(mydataset, (describeBy(Response, list(DOSE, Sex), mat=TRUE)))
+
+# Preliminary visualization
+
+#Boxplot
+p<-ggplot(mydataset, aes(factor(DOSE), Response))
+p+geom_boxplot()
+
+# save boxplot as bp1
+bp1<-ggplot(mydataset, aes(factor(DOSE), Response))+
+  geom_boxplot()
+
+
+#Boxplot with individual data
+p<-ggplot(mydataset, aes(factor(DOSE), Response))
+p+geom_boxplot() +
+geom_jitter()
+
+# save as bp2
+bp2<-ggplot(mydataset, aes(factor(DOSE), Response))+
+  geom_boxplot() +
+  geom_jitter()
+
+
+#Boxplot: by Sex
+p<-ggplot(mydataset, aes(factor(DOSE), Response))
+p+geom_boxplot(aes(fill=factor(Sex)))
+
+# save as bp3
+
+bp3<-ggplot(mydataset, aes(factor(DOSE), Response))+
+  geom_boxplot(aes(fill=factor(Sex)))
+
+
+#Line plot: DOSE by Sex
+
+ggplot(mydataset, aes(x=DOSE, y=Response, colour=Sex, group=Sex)) + 
+  geom_smooth()
+
+
+```
+
+#### Considerations
+
+* Type I, II, and III can be modeled using "ez" package and a bit of googling or textbook referral
+* By default, R uses Type I sums of squares, and SPSS uses Type III sums of squares
+* There is a debate out there about what is more appropriate depending on conditions
+* Certain assumptions have to be met (homogeneity of variance)
+* Distributions within groups should be normally distributed
+* General format: aov.model <-aov(outcome ~ predictor(s) + Error, data=dataFrame)
+* Error term: Error(Subject/Within Subjects IV) or Error if one between subjects variable - Error(Subject)
+* Suggested resourse: http://egret.psychol.cam.ac.uk/statistics/R/anova.html#visualization
+
+```{r}
+# Two way mixed factor ANOvA
+AnovaModel.1 <- aov(Response ~ Sex*DOSE + Error(Subject/DOSE), data=mydataset)
+summary(AnovaModel.1)
+
+# One way Anova with Sex removed
+AnovaModel.2 <- aov(Response ~ DOSE + Error(Subject/DOSE), data=mydataset)
+summary(AnovaModel.2)
+
+
+# One way Female only
+AnovaModel.3 <- aov(Response ~ DOSE + Error(Subject), data=Female)
+summary(AnovaModel.3)
+
+
+# One way Male only
+AnovaModel.4 <- aov(Response ~ DOSE + Error(Subject), data=Male)
+summary(AnovaModel.4)
+```
+
+
+
+# <a href="/R_workshop" class="topic" style="color:red">Navigate Back</a>
