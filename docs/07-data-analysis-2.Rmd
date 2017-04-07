@@ -1,0 +1,250 @@
+---
+title: "Basics of Data Analysis using R (Part 2)"
+output:
+  html_document:
+    toc: yes
+---
+
+## Load packages
+```{r, message=FALSE, warning=FALSE}
+
+ipak <- function(pkg){
+        new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+        if (length(new.pkg))
+                install.packages(new.pkg, dependencies = TRUE)
+        sapply(pkg, require, character.only = TRUE)
+}
+
+# usage
+packages <- c("ggplot2", "Rmisc", "tidyr", "RColorBrewer", "plotly", "ggplot2", "nlme", "dplyr", "cowplot", "grid", "gridExtra", "reshape", "plyr", "psych") # add or remove packages as needed
+ipak(packages)
+```
+
+#Importing and cleaning data
+
+##Import data
+
+```{r}
+#Load dataset
+mydataset <- read.csv("data/Sample-Dose-Effect-Curve.csv")
+
+#Explore dataset
+summary(mydataset)
+str(mydataset)
+
+```
+
+##Rename columns
+
+```{r}
+
+
+mydataset<-rename(mydataset, c("IV.Sex"="Sex", "DV.Activity"="Activity", "IV.DOSE"="DOSE", "DV.Response"="Response"))
+str(mydataset)
+
+```
+
+##Convert variables to factors
+
+```{r}
+mydataset$Subject<-as.factor(mydataset$Subject)
+mydataset$DOSE<-as.factor(mydataset$DOSE)
+
+#Explore dataset
+summary(mydataset)
+str(mydataset)
+```
+
+
+## Rename level of a factor
+
+```{r}
+with(mydataset, (levels(Sex)))
+mydataset$Sex<-with(mydataset, revalue(Sex, c("Fem"="F")))
+str(mydataset)
+
+```
+
+
+##Subset 
+
+```{r}
+### Subset dataset for separate analysis if needed
+Female<-subset(mydataset, Sex=="F")
+Male<-subset(mydataset, Sex=="M")
+
+summary(Female)
+summary(Male)
+```
+
+
+##Basic summary statistics using Psych package
+
+```{r}
+#Basic summary statistics by group
+with(mydataset, (describeBy(Response, list(DOSE, Sex), mat=TRUE)))
+```
+
+##Preliminary visualization 
+
+```{r}
+#Boxplot
+p<-ggplot(mydataset, aes(factor(DOSE), Response))
+p+geom_boxplot()
+
+# save boxplot as bp1
+bp1<-ggplot(mydataset, aes(factor(DOSE), Response))+
+  geom_boxplot()
+
+
+#Boxplot with individual data
+p<-ggplot(mydataset, aes(factor(DOSE), Response))
+p+geom_boxplot() +
+geom_jitter()
+
+# save as bp2
+bp2<-ggplot(mydataset, aes(factor(DOSE), Response))+
+  geom_boxplot() +
+  geom_jitter()
+
+
+#Boxplot: by Sex
+p<-ggplot(mydataset, aes(factor(DOSE), Response))
+p+geom_boxplot(aes(fill=factor(Sex)))
+
+# save as bp3
+
+bp3<-ggplot(mydataset, aes(factor(DOSE), Response))+
+  geom_boxplot(aes(fill=factor(Sex)))
+
+
+#Line plot: DOSE by Sex
+
+ggplot(mydataset, aes(x=DOSE, y=Response, colour=Sex, group=Sex)) + 
+  geom_smooth()
+  
+  
+  
+```
+
+
+# Multiple (Linear) Regression
+
+
+
+```{r}
+# Comparing models
+fit0<-lm(Response~1, data=mydataset)
+fit1<-lm(Response~DOSE, data=mydataset)
+fit2<-lm(Response~DOSE+Sex, data=mydataset)
+anova(fit0,fit1,fit2)
+
+# Fitting model
+# Fitting model
+fit <- lm(Response~DOSE+Sex, data=mydataset)
+anova(fit) # anova table 
+summary(fit)
+
+fit <- lm(Response~DOSE*Sex, data=mydataset)
+anova(fit) # anova table 
+summary(fit)
+
+# Other useful functions 
+coefficients(fit) # model coefficients
+confint(fit, level=0.95) # CIs for model parameters 
+vcov(fit) # covariance matrix for model parameters 
+plot(fit)
+
+# diagnostic plots 
+layout(matrix(c(1,2,3,4),2,2)) # optional 4 graphs/page 
+plot(fit)
+
+```
+
+
+
+# Basics of Statistical Analysis Using R (Part 2)
+
+## Multilevel approach: multilevel linear model
+
+* See p. 573 of Discovering Statistics Using R, 1st Edition by Andy Field, Jeremy Miles, Zoe Field.
+* Well suited to repeated-measures experimental designs
+* Can be modeled using _lme()_ function from {nlme} package
+* General format: lme.model<-lme(outcome ~ predictor(s), random = random effects, data = dataFrame, method="ML")
+* The default method is restricted maximum-likelihood estimation (REML)
+* For various reasons I am not competent enough to discuss here, the advised method is maximum likelihood (ML)
+* "random" specifies any random effects - an effect that can vary across different entities
+* In the example below we have _random=~1 | Subject/DOSE/Sex_ which means that the data with the same value of _Subject_ within different levels of _DOSE_ or _Sex_ are dependent (i.e., from the same subject)
+
+### Step by Step: Using multilevel approach
+
+1. Build a model from a baseline that includes no predictors other than intercept.
+2. Add predictor 1 (DOSE)
+3. Add predictor 2 (Sex)
+4. Add interaction (Dose:Sex)
+5. Compare models to the baseline using anova
+6. Determine if adding predictors and/or interaction significantly improved the model**
+7. Run appropriate "summary" on the model of interest which will give you all the effects and comparisons***
+
+** When added predictor significantly improves a model, in other words the predictor had a significant effect on dependent measure, we can record this as such:
+
+$$\chi^2(2)=9.1, p=.010$$
+
+Where (2) is an increase of degrees of freedom from baseline, in this case by 2
+
+*** When reporting contrasts from "summary" output we can print it as such:
+
+$$b=2.19, t(38)=3.18, p=.003$$
+
+See Andy Field pages 595-596
+
+
+```{r}
+
+# Build a baseline: no predictors other than the intercept
+
+baseline<-lme(Response~1, random=~1 | Subject/DOSE/Sex, data=mydataset, method="ML")
+
+# note that the outcome is predicted only from the intercept (Response~1)
+# and we asked to use ML to estimate the model
+# the variables DOSE/Sex are nested within the variable Subject (scores for levels of thes variables can be found within each Sbuject)
+# to see the effect of each predictor we need to add them one by one
+# lets add "DOSE" variable to the model
+
+doseModel<-update(baseline, .~. +DOSE)
+
+# note that we created new model "doseModel" so we can compare it to "baseline" above if need it
+# note that we used update function to simply update the model above without rewriting most of it
+# next, we can keep buildign the modely by adding "Sex" variable to the "doseModel"
+
+
+sexModel<-update(doseModel, .~. +Sex)
+
+# note that we created a new model "sexModel" using "update" function
+# next, lets add interaction term
+
+mixModel<-update(sexModel, .~. +DOSE:Sex)
+
+# to compare these models we can list them in the order in which we want them to be compared using anova() function
+
+anova(baseline, doseModel, sexModel, mixModel)
+
+# We can further explore the model by runnign summary function
+
+summary(doseModel) 
+
+# this give us all the comparisons to 0 we need!
+# next lets explore sexModel
+
+summary(sexModel)
+
+# looks like there "Sex" did not significantly contribued to the variance
+# finally lets explore mixModel
+
+summary(mixModel)
+
+
+```
+
+
+# <a href="/R_workshop" class="topic" style="color:red">Navigate Back</a>
