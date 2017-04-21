@@ -1,0 +1,173 @@
+---
+title: "Data Visualization"
+output:
+  html_document:
+    toc: yes
+---
+
+# Load packages
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+library(tidyverse)
+library(Rmisc)
+```
+
+
+# Import and tidy data
+
+```{r}
+#Load dataset, rename, columns, and get summary with SE
+
+## One way: Sex combined
+
+ds1 <- read.csv("data/Sample-Dose-Effect-Curve.csv") %>%
+        rename(c("IV.Sex"="Sex", "DV.Activity"="Activity", "IV.DOSE"="DOSE", "DV.Response"="Response"))  %>%
+        summarySE(measurevar="Response", groupvars="DOSE")
+        
+
+## Two ways: Sex with two levels
+
+ds2 <- read.csv("data/Sample-Dose-Effect-Curve.csv") %>%
+        rename(c("IV.Sex"="Sex", "DV.Activity"="Activity", "IV.DOSE"="DOSE", "DV.Response"="Response"))  %>%
+        summarySE(measurevar="Response", groupvars=c("Sex", "DOSE"))
+
+```
+
+# Visualize data
+
+## One way: Sex combined
+
+```{r}
+ggplot(data = ds1, aes(x = DOSE, y = Response)) + 
+  geom_errorbar(aes(ymin=Response-se, ymax=Response+se), width=0.1) + 
+  geom_line() + 
+  geom_point(size=5)
+
+# not quite what we looking for (see x axis)
+
+ggplot(data = ds1, aes(x = factor(DOSE), y = Response)) + 
+  geom_errorbar(aes(ymin=Response-se, ymax=Response+se), width=0.1) + 
+  geom_line() + 
+  geom_point(size=5)
+
+# better, but we are missing the line now and we have a warning: "geom_path: Each group consists of only one observation. Do you need to adjust the group aesthetic?" We can fix that by adding "group=1" to aesthetics.
+
+ggplot(data = ds1, aes(x = factor(DOSE), y = Response, group=1)) + 
+  geom_errorbar(aes(ymin=Response-se, ymax=Response+se), width=0.1) + 
+  geom_line() + 
+  geom_point(size=5)
+
+# now we have what we need. Lets apply "classic" theme to get clean look
+
+ggplot(data = ds1, aes(x = factor(DOSE), y = Response, group=1)) + 
+  geom_errorbar(aes(ymin=Response-se, ymax=Response+se), width=0.1) + 
+  geom_line() + 
+  geom_point(size=5)+
+  theme_classic()
+
+# lets change axis lables and add figure title.
+
+ggplot(data = ds1, aes(x = factor(DOSE), y = Response, group=1)) + 
+        geom_errorbar(aes(ymin=Response-se, ymax=Response+se), width=0.1) + 
+        geom_line() + 
+        geom_point(size=5)+
+        theme_classic()+
+        labs(x="Drug Dose mg/kg", y="Some Activity +/- SEM", title="Drug x dose response curve")
+
+
+
+
+
+
+```
+
+## Two ways: Dose by Sex
+
+```{r}
+
+ggplot(data = ds2, aes(x = factor(DOSE), y = Response, group = Sex) ) + 
+        geom_errorbar(aes(ymin=Response-se, ymax=Response+se), width=0.1) + 
+        geom_line() + 
+        geom_point() 
+
+# so this is a bit messy, lets clean it up a bit
+# offset data points
+# set limits of y axis from 0 to 0.4
+# change shape of points for M and F
+# change color of points for M and F
+# change theme to classic
+# move legent into the frame for better aesthetics
+
+
+ggplot(data = ds2, aes(x = factor(DOSE), y = Response, group = Sex) ) + 
+        geom_errorbar(aes(ymin=Response-se, ymax=Response+se), width=0.1, position = position_dodge(width = 0.2)) + 
+        geom_line(position = position_dodge(width = 0.2)) + 
+        geom_point(aes(shape=Sex, fill=Sex), position = position_dodge(width = 0.2), size=5) + 
+        scale_y_continuous("My Y axis", limits=c(0, 0.40)) + 
+        scale_shape_manual(values=c(24,21)) + 
+        scale_fill_manual(values=c("white","black")) + 
+        theme_classic()+ 
+        theme(
+                legend.position = c(.95, .95),
+                legend.justification = c("right", "top"),
+                legend.box.just = "right",
+                legend.margin = margin(6, 6, 6, 6)
+                )
+
+```
+
+# Publication ready
+
+```{r fig.cap="The effect of drug x on response variable y.", fig.height=3.5, fig.aligh='center', fig.width=11.32, out.width='80%'}
+
+# note golder ratio (1:1.618) setup
+
+library(cowplot)
+
+p1<-ggplot(data = ds1, aes(x = factor(DOSE), y = Response, group=1)) + 
+        geom_errorbar(aes(ymin=Response-se, ymax=Response+se), width=0.1) + 
+        geom_line() + 
+        geom_point(size=5)+
+        theme_classic()+
+        labs(x="Drug Dose mg/kg", y="Some Activity +/- SEM", title="Drug x dose response curve")
+
+
+p2<-ggplot(data = ds2, aes(x = factor(DOSE), y = Response, group = Sex) ) + 
+        geom_errorbar(aes(ymin=Response-se, ymax=Response+se), width=0.1, position = position_dodge(width = 0.2)) + 
+        geom_line(position = position_dodge(width = 0.2)) + 
+        geom_point(aes(shape=Sex, fill=Sex), position = position_dodge(width = 0.2), size=5) + 
+        scale_y_continuous("My Y axis", limits=c(0, 0.40)) + 
+        scale_shape_manual(values=c(24,21)) + 
+        scale_fill_manual(values=c("white","black")) + 
+        theme_classic()+ 
+        theme(
+                legend.position = c(.95, .95),
+                legend.justification = c("right", "top"),
+                legend.box.just = "right",
+                legend.margin = margin(6, 6, 6, 6)
+                )
+plot_grid(p1, p2, labels = c("A", "B"))
+
+pdf("Figure-1.pdf", width = 11.32, height = 3.5, useDingbats=FALSE)
+plot_grid(p1, p2, labels = c("A", "B"))
+dev.off()
+
+# svg(filename="Figure-1.svg", width = 11.32, height = 3.5)
+# plot_grid(p1, p2, labels = c("A", "B"))
+# dev.off()
+# 
+# png(filename="Figure-1.png", width = 11.32, height = 3.5, units = "in", res=300, type = "cairo")
+# plot_grid(p1, p2, labels = c("A", "B"))
+# dev.off()
+# 
+# tiff(filename="Figure-1.tiff", width = 11.32, height = 3.5, units = "in", res=300, type = "cairo")
+# plot_grid(p1, p2, labels = c("A", "B"))
+# dev.off()
+
+
+
+```
+
+
+
+# <a href="/R_workshop" class="topic" style="color:red">Navigate Back</a>
