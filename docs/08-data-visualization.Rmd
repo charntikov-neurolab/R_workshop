@@ -10,6 +10,7 @@ output:
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 library(tidyverse)
 library(Rmisc)
+
 ```
 
 
@@ -34,6 +35,19 @@ ds2 <- read.csv("data/Sample-Dose-Effect-Curve.csv") %>%
 ```
 
 # Visualize data
+
+## Adding another dimetion using *aesthetics* function
+
+```{r}
+
+ds <- read.csv("data/Sample-Dose-Effect-Curve.csv") %>%
+        rename(c("IV.Sex"="Sex", "DV.Activity"="Activity", "IV.DOSE"="DOSE", "DV.Response"="Response"))
+
+ggplot(data = ds, aes(x = factor(DOSE), y = Response, group=Sex)) + 
+  geom_jitter(aes(colour=Activity ,size=Activity))
+
+```
+
 
 ## One way: Sex combined
 
@@ -119,6 +133,8 @@ ggplot(data = ds2, aes(x = factor(DOSE), y = Response, group = Sex) ) +
 # Publication ready
 
 ```{r fig.cap="The effect of drug x on response variable y.", fig.aligh='center', fig.height=3.5, fig.width=11.32, message=FALSE, warning=FALSE, out.width='80%'}
+
+# chunk options: "fig.cap="The effect of drug x on response variable y.", fig.aligh='center', fig.height=3.5, fig.width=11.32, message=FALSE, warning=FALSE, out.width='80%'"
 
 # note golder ratio (1:1.618) setup
 

@@ -204,6 +204,16 @@ $$b=2.19, t(38)=3.18, p=.003$$
 
 See Andy Field pages 595-596
 
+```{r}
+mydataset <- read.csv("data/Sample-Dose-Effect-Curve.csv")
+mydataset<-rename(mydataset, c("IV.Sex"="Sex", "DV.Activity"="Activity", "IV.DOSE"="DOSE", "DV.Response"="Response"))
+
+mydataset$Subject<-as.factor(mydataset$Subject)
+mydataset$DOSE<-as.factor(mydataset$DOSE)
+
+```
+
+
 
 ```{r}
 
