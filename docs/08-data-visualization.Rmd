@@ -118,7 +118,7 @@ ggplot(data = ds2, aes(x = factor(DOSE), y = Response, group = Sex) ) +
 
 # Publication ready
 
-```{r fig.cap="The effect of drug x on response variable y.", fig.height=3.5, fig.aligh='center', fig.width=11.32, out.width='80%'}
+```{r fig.cap="The effect of drug x on response variable y.", fig.aligh='center', fig.height=3.5, fig.width=11.32, message=FALSE, warning=FALSE, out.width='80%'}
 
 # note golder ratio (1:1.618) setup
 
@@ -146,7 +146,12 @@ p2<-ggplot(data = ds2, aes(x = factor(DOSE), y = Response, group = Sex) ) +
                 legend.box.just = "right",
                 legend.margin = margin(6, 6, 6, 6)
                 )
+
+# combine plots into one figure with labels
+
 plot_grid(p1, p2, labels = c("A", "B"))
+
+# save figure as pdf
 
 pdf("Figure-1.pdf", width = 11.32, height = 3.5, useDingbats=FALSE)
 plot_grid(p1, p2, labels = c("A", "B"))
