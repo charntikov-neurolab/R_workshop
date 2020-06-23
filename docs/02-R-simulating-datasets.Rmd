@@ -5,7 +5,7 @@ output:
     toc: yes
 ---
 
-# Load or install packages for this lesson
+# Load or install packages for this lesson using ipak function
 
 ```{r message=FALSE, warning=FALSE}
 # Load packages
