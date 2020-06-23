@@ -5,6 +5,25 @@ output:
     toc: yes
 ---
 
+# Load or install packages for this lesson
+
+```{r}
+# Load packages
+
+ipak <- function(pkg){
+  new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+  if (length(new.pkg))
+    install.packages(new.pkg, dependencies = TRUE)
+  sapply(pkg, require, character.only = TRUE)
+}
+
+# usage
+packages <- c("ggplot2", "Rmisc", "tidyr", "Hmisc", "psych")
+ipak(packages)
+
+```
+
+
 # Simulating datasets
 
 There are many ways to simulate factorial datasets. We will use a step-by-step approach to make sure that you are getting familiar with every aspect of datasets based on factorial design. 
