@@ -7,7 +7,7 @@ output:
 
 # Load or install packages for this lesson
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Load packages
 
 ipak <- function(pkg){
@@ -150,23 +150,14 @@ summary(df)
 
 # Get a bit expand look at your data
 
-# Use Hmisc package
-
-library(Hmisc)
-describe(df)
-
 # Use psych package
 
-library(psych)
 describe(df) # Nice output with sds, ses, and means
 
 
-# Use 
+# Use Rmisc pacakge 
 
-library(Rmisc)
 summarySE(df, measurevar="dv", groupvar="dose") # really good for visualizing with error bars
-
-
 
 ```
 
