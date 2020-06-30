@@ -1,6 +1,8 @@
 ---
 title: "Project Management"
 output:
+  pdf_document:
+    toc: yes
   html_document:
     toc: yes
 ---
@@ -17,19 +19,18 @@ OR
 
 I recommend 
 
-* two additional folders: figures and data
-* data-visualization.Rmd file for data visualization
-* figures.R file for publication quality figures
-* data-analysis.R for all your data analysis
+* two folders in the root of your project directory: figures-tables and data
+* ProjectName.Rmd file for data visualization and data analyses
+
+Note! RStudio project files do not play well with _Box Drive_. They do work well with _Box Sync_ and _OneDrive_ (I have not tested dropbox).
+
 
 ### Project tree structure
 
 * MainProjectFolder/
     + data/
-    + figures/
-    + data-analysis.R
-    + data-visualization.Rmd
-    + figures.R 
+    + figures-tables/
+    + ProjectName.Rmd
     + ProjectName.Rproj
         
 
@@ -45,20 +46,17 @@ I recommend
 
 ## Code files
 
-Let's create data visualization, figures, and data analysis files in your project directory
+Let's create a working file for your data visualization, figures, and data analysis.
 
-## Data visualization file
-
-Let's start with data-visualization.Rmd file
 
 ### Initial setup
 
-1. Create file File:New File:R Markdown:PDF output
+1. Create Rmd file -> File:New File:R Markdown:PDF output
 2. Erase body (everything below preamble)
 3. Insert new R chunk (see +C "Insert" in the document top toolbar)
 4. Paste the following code in the first chunk
 
-```{r, message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE}
 
 ipak <- function(pkg){
         new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
@@ -68,19 +66,21 @@ ipak <- function(pkg){
 }
 
 # usage
-packages <- c("ggplot2", "Rmisc", "tidyr", "RColorBrewer", "plotly", "ggplot2", "nlme", "dplyr", "cowplot", "grid", "gridExtra") # add or remove packages as needed
+packages <- c("ggplot2", "Rmisc", "tidyr", "RColorBrewer", "plotly", "ggplot2", "nlme", "dplyr", "grid", "gridExtra") # add or remove packages as needed
 ipak(packages)
 ```
 
 5. Adjust chunk parameters
 
-> {r, message=FALSE, warning=FALSE}
+> {r, message=FALSE, warning=FALSE, include=FALSE}
 
 * message=FALSE # turn off all messages
 * warning=FALSE # turn off all warnings
+* include=FALSE # do not show output
 * find more options by googling "rstudio chunk options"
+* you can adjust these parameters by using gear icon on the top right of each code chunk. 
 
-### Add project description using markdown (markdow cheat sheet can be found in RStudio under Help:Cheatsheets)
+### Add project description using markdown (markdown cheat sheet can be found in RStudio under Help:Cheatsheets)
 
 > \# My ground braking experiment
 
@@ -108,8 +108,43 @@ ggplot(dataset, aes(x = factor(IV.DOSE), y = DV.Response, colour=IV.Sex)) +
 ```
 
 
-* Note that plot now looks different that before - no grid lines, white background, and no top and right border thanks to "cowplot" package. Once "cowplot" package is loaded ggplot plots will be automatically cleaned up. 
+* The plot is presented in a default ggplot configuration. This configuration is not often desirable for the publication.
+* Let's adjust some parameters to make it a bit more publication friendly. 
 
+### Convert variables to factors and rename
+
+
+
+
+```{r}
+dataset <- read.csv("data/Sample-Dose-Effect-Curve.csv")
+dataset$Subject<-as.factor(dataset$Subject)
+dataset$Drug<-as.factor(dataset$Drug)
+dataset$Sex <-as.factor(dataset$IV.Sex )
+dataset$Dose <- factor(dataset$IV.DOSE, levels=c("0","5","10", "20", "30", "60"))
+summary(dataset)
+
+# See RStudio Help->Cheatsheets for more information about data transformations, manipulations, and visualization. 
+
+# Classic theme
+
+ggplot(dataset, aes(x = Dose, y = DV.Response, colour=Sex)) +
+        geom_boxplot()+
+        theme_classic()+
+        labs(title = "Title of your plot", subtitle = "Subtitle of your plot", y="Renamed y axis")
+
+
+# bw theme
+
+ggplot(dataset, aes(x = Dose, y = DV.Response, colour=Sex)) +
+        geom_boxplot()+
+        theme_bw()+
+        labs(title = "Title of your plot", subtitle = "Subtitle of your plot", y="Renamed y axis")
+```
+For more information on different ggplot themes see
+
+https://ggplot2-book.org/polishing.html
+https://ggplot2.tidyverse.org/reference/ggtheme.html
 
 
 ### Create a PDF output
@@ -120,12 +155,13 @@ ggplot(dataset, aes(x = factor(IV.DOSE), y = DV.Response, colour=IV.Sex)) +
 ### Additional learning opportunity
 
 * place your own dataset in the data folder
-* create separate data visualization file with distinct name of your dataset
+* create separate Rmd data visualization file with distinct name of your dataset
 * within the Rmd file create code to summarize your data and visualize your data as you like or able.
+* try different themes for your plot
+* try different Titles for various elements in your plot
 * output Rmd to PDF file using "Knit" function
 * Troubleshoot if needed by googling your problem.
-
-
+* Find more information here https://ggplot2-book.org/
 
 
 # Session details

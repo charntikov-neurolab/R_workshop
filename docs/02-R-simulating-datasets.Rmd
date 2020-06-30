@@ -146,7 +146,7 @@ df # verify complete dataset
 
 # Get summary for a complete dataset
 summary(df) 
-
+df$subject<-as.factor(df$subject)
 
 # Get a bit expand look at your data
 
